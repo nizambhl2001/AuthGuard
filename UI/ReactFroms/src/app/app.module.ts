@@ -4,10 +4,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { LoginComponent } from './component/login/login.component';
 import { SingupComponent } from './component/singup/singup.component';
 import { FilterPipe } from './filter.pipe';
+import { UserComponent } from './user/user.component';
+import { MyInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,8 @@ import { FilterPipe } from './filter.pipe';
     EmployeeComponent,
     LoginComponent,
     SingupComponent,
-    FilterPipe
+    FilterPipe,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +28,13 @@ import { FilterPipe } from './filter.pipe';
     HttpClientModule
 
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MyInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

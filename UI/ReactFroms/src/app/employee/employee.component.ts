@@ -23,7 +23,7 @@ export class EmployeeComponent implements OnInit {
   formSubmitted = false;
   searchText: string = '';
   currentPage: number = 1;
-  itemsPerPage: number = 2;
+  itemsPerPage: number = 3;
   
 
   constructor(

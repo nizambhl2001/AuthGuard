@@ -2,6 +2,7 @@
   <div class="container-fluid">
     <a class="navbar-brand" style="color: aliceblue;" href="#">Navbar</a>
      <div class="d-flex">
+        <button type="button" [routerLink]="['/user']" routerLinkActive="router-link-active"  class="btn btn-primary">User</button>
         <button type="button" (click)="LogOut()" class="btn btn-primary">Logout</button>
       </div>
   </div>
@@ -141,7 +142,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of getdata | filter: searchText; let i = index">
+            <tr *ngFor="let item of paginatedData | filter: searchText; let i = index">
               <td>{{ i + (currentPage - 1) * itemsPerPage + 1 }}</td>
               <td>{{ item.fname + ' ' + item.lname }}</td>
               <td>{{item.district}}</td>
@@ -155,10 +156,11 @@
         </table>
       </div>
       <div class="modal-footer">
+          <span>{{ currentPage }} / {{ totalPages }}</span>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">Close</button>
         <div class="pagination">
           <button type="button" class="btn btn-primary" (click)="prevPage()">Previous</button>
-          <span>{{ currentPage }} / {{ totalPages }}</span>
+          &nbsp;
           <button type="button" class="btn btn-primary" (click)="nextPage()">Next</button>
         </div>
       </div>

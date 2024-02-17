@@ -4,11 +4,13 @@ import { LoginComponent } from './component/login/login.component';
 import { SingupComponent } from './component/singup/singup.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { AuthGuard } from './guard/auth.guard';
+import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
   { path:'login', component:LoginComponent },
   { path:'signup', component:SingupComponent},
-  { path:'dashboard' ,component:EmployeeComponent,canActivate:[AuthGuard]}
+  { path:'dashboard' ,component:EmployeeComponent,canActivate:[AuthGuard]},
+  { path:'user' ,component:UserComponent}
   
 ];
 
