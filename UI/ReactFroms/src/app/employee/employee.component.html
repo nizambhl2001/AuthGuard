@@ -1,0 +1,167 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" style="color: aliceblue;" href="#">Navbar</a>
+     <div class="d-flex">
+        <button type="button" (click)="LogOut()" class="btn btn-primary">Logout</button>
+      </div>
+  </div>
+</nav>
+  <table class="table mt-5">
+  <thead>
+    <tr>
+      <th scope="col">EmployeeID</th>
+      <th scope="col">Full Name</th>
+      <th scope="col">District</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Religion</th>
+      <th scope="col">Email ID</th>
+      <th scope="col">Mobile No</th>
+      <th scope="col">Salary</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr *ngFor="let item of getdata ; let i = index">
+      <td>{{i +1}}</td>
+      <td>{{ item.fname + ' ' + item.lname }}</td>
+      <td>{{item.district}}</td>
+      <td>{{item.gender}}</td>
+      <td>{{item.religion}}</td>
+      <td>{{item.email}}</td>
+      <td>{{item.mobile}}</td>
+      <td>{{item.salary}}</td>
+
+      <td>
+          <button  class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="onEdit(item)">Update</button>
+          <button class="btn btn-danger mx-1" (click)="DeleteItem(item)">Delete</button>
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+<div class="d-flex col-6 mx-auto justify-content-md-center">
+<button type="button" (click)="ClickAddEmployee()" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</button>
+<button class="btn btn-info ml-1" (click)="resetSearchInput()" type="button" data-target="#showModal" data-toggle="modal">Show</button>
+
+</div>
+
+
+
+<!-- Modal save buttion value-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addItemForm">
+          <div class="form-group">
+            <label for="exampleInputEmail1">First Name</label>
+            <input type="email" class="form-control" formControlName="fname">
+            <div *ngIf="formSubmitted || f.fname.hasError('required') && (f.fname.dirty || f.fname.touched)">
+              <small class="text-danger">First Name is required</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Last Name</label>
+            <input type="email" class="form-control" formControlName="lname">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input type="email" class="form-control" formControlName="email">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Mobile</label>
+            <input type="email" class="form-control" formControlName="mobile">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Salary</label>
+            <input type="email" class="form-control" formControlName="salary">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">District</label>
+            <select formControlName="district" class="form-control">
+              <option *ngFor="let district of districts" [value]="district.name">{{district.name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div *ngIf="genders">
+              <label for="gender">Select Gender</label>
+              <select id="gender" formControlName="gender" class="form-control">
+                <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="religion">Select Religion</label>
+            <select formControlName="religion" class="form-control">
+              <option *ngFor="let religion of religions" [value]="religion.name">{{ religion.name }}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">Close</button>
+        <button type="submit" *ngIf="ShowAdd" class="btn btn-success"  (click)="onSubmit()">Save</button>
+        <button type="submit" *ngIf="ShowUpdate" class="btn btn-primary" (click)="UpdateEmployee()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal show buttion value-->
+
+
+<div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="showModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control mb-3" placeholder="Search" [(ngModel)]="searchText">
+        <table class="table mt-3">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Full Name</th>
+              <th>District</th>
+              <th>Gender</th>
+              <th>Religion</th>
+              <th>Email ID</th>
+              <th>Mobile No</th>
+              <th>Salary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of getdata | filter: searchText; let i = index">
+              <td>{{ i + (currentPage - 1) * itemsPerPage + 1 }}</td>
+              <td>{{ item.fname + ' ' + item.lname }}</td>
+              <td>{{item.district}}</td>
+              <td>{{item.gender}}</td>
+              <td>{{item.religion}}</td>
+              <td>{{item.email}}</td>
+              <td>{{item.mobile}}</td>
+              <td>{{item.salary}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">Close</button>
+        <div class="pagination">
+          <button type="button" class="btn btn-primary" (click)="prevPage()">Previous</button>
+          <span>{{ currentPage }} / {{ totalPages }}</span>
+          <button type="button" class="btn btn-primary" (click)="nextPage()">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

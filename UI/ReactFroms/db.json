@@ -1,0 +1,104 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "fname": "Jakir",
+      "lname": "hassan",
+      "email": "jakir@gmail.com",
+      "mobile": "0112545456",
+      "salary": "7000",
+      "district": "Rajshahi",
+      "gender": "Male",
+      "religion": "Islam"
+    },
+    {
+      "id": 2,
+      "fname": "A",
+      "lname": "Barek",
+      "email": "barek@gmail.com",
+      "mobile": "01767915221",
+      "salary": "5200",
+      "district": "Dhaka",
+      "gender": "Male",
+      "religion": "Islam"
+    },
+    {
+      "id": 3,
+      "fname": "Abir",
+      "lname": "Das",
+      "email": "abir@gmail.com",
+      "mobile": "01767915221",
+      "salary": "52000",
+      "district": "Rajshahi",
+      "gender": "Male",
+      "religion": "Islam"
+    },
+    {
+      "id": 4,
+      "fname": "MD",
+      "lname": "Sumon",
+      "email": "sumon@gmail.com",
+      "mobile": "01580816671",
+      "salary": "5200",
+      "district": "Bhola",
+      "gender": "Male",
+      "religion": "Islam"
+    }
+  ],
+  "districts": [
+    {
+      "id": 1,
+      "name": "Bhola"
+    },
+    {
+      "id": 2,
+      "name": "Dhaka"
+    },
+    {
+      "id": 3,
+      "name": "Rajshahi"
+    }
+  ],
+  "religions": [
+    {
+      "id": 1,
+      "name": "Christianity"
+    },
+    {
+      "id": 2,
+      "name": "Islam"
+    },
+    {
+      "id": 3,
+      "name": "Hinduism"
+    },
+    {
+      "id": 4,
+      "name": "Buddhism"
+    },
+    {
+      "id": 5,
+      "name": "Judaism"
+    },
+    {
+      "id": 6,
+      "name": "Sikhism"
+    },
+    {
+      "id": 7,
+      "name": "Bahá'í Faith"
+    },
+    {
+      "id": 8,
+      "name": "Jainism"
+    },
+    {
+      "id": 9,
+      "name": "Shinto"
+    },
+    {
+      "id": 10,
+      "name": "Taoism"
+    }
+  ]
+}
