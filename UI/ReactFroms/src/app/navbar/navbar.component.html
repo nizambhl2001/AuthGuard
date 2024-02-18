@@ -1,0 +1,9 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" style="color: aliceblue;" href="#">Navbar</a>
+     <div class="d-flex">
+        <button type="button" [routerLink]="['/user']" routerLinkActive="router-link-active"  class="btn btn-primary">User</button>
+        <button type="button" (click)="LogOut()" class="btn btn-primary">Logout</button>
+      </div>
+  </div>
+</nav>

@@ -9,7 +9,8 @@ import { LoginComponent } from './component/login/login.component';
 import { SingupComponent } from './component/singup/singup.component';
 import { FilterPipe } from './filter.pipe';
 import { UserComponent } from './user/user.component';
-import { MyInterceptor } from './interceptors/token.interceptor';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MyInterceptor } from './interceptors/token.interceptor';
     LoginComponent,
     SingupComponent,
     FilterPipe,
-    UserComponent
+    UserComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,7 @@ import { MyInterceptor } from './interceptors/token.interceptor';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: MyInterceptor,
+      useClass: TokenInterceptor,
       multi: true
     }
   ],

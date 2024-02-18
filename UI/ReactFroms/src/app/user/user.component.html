@@ -1,11 +1,28 @@
+<app-navbar></app-navbar>
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
-      <ul *ngFor="let user of Users">
-        <li>{{user.username}}</li>
-      </ul>
-      
+    <div class="col-md-12 mt-5">
+
+      <table class="table mt-5">
+        <tr>
+          <th scope="col">EmployeeID</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">User Name</th>
+          <th scope="col">Email ID</th>
+          <th scope="col">Role</th>
+        </tr>
+        <tr *ngFor="let user of Users;let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{user.firstName + ' '+ user.lastName}}</td>
+          <td>{{user.username}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.role}}</td>
+        </tr>
+      </table>
     </div>
+   <div class="justify-content-md-end d-flex col-12">
+    <button type="button" class="btn btn-primary" [routerLink]="['/dashboard']">Back</button>
+   </div>
   </div>
 </div>
-<h1>Hello World</h1>
+
