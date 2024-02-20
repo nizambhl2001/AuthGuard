@@ -6,7 +6,9 @@ import { EmployeeComponent } from './employee/employee.component';
 import { AuthGuard } from './guard/auth.guard';
 import { UserComponent } from './user/user.component';
 
+
 const routes: Routes = [
+  { path:'', component:LoginComponent },
   { path:'login', component:LoginComponent },
   { path:'signup', component:SingupComponent},
   { path:'dashboard' ,component:EmployeeComponent,canActivate:[AuthGuard]},

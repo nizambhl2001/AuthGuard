@@ -19,17 +19,18 @@ export class TokenInterceptor implements HttpInterceptor {
     })
    }
     return next.handle(request)
-    // .pipe(
-    //   catchError((err:any)=>{
-    //     if(err instanceof HttpErrorResponse){
-    //       if(err.status ==401){
-    //         alert("Token is Exprire, Login again");
-    //         this.router.navigate(['login'])
-    //       }
-    //     }
-    //     return throwError(()=> new Error("Some Error"))
-    //   })
-    // ); 
+    .pipe(
+      catchError((err:any)=>{
+        if(err instanceof HttpErrorResponse){
+          if(err.status ==401){
+           alert("Token is Exprire, Login again");
+            console.log("Token is Exprire, Login again");
+            this.router.navigate(['login'])
+          }
+        }
+        return throwError(()=> new Error("Some Error"))
+      })
+    ); 
     
   }
 }

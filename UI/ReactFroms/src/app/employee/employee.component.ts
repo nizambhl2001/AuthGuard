@@ -39,9 +39,7 @@ export class EmployeeComponent implements OnInit {
    this.CreateFroms();
   }
 
-  LogOut(){
-    this.auth.logOut();
-  }
+ 
   //reactive froms
   CreateFroms():void{
     this.addItemForm = this.fb.group({
