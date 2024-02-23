@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmpModelobj } from './Emp.Models';
 import { EmpService } from '../emp.service';
 import { AuthService } from '../service/auth.service';
-import { FilterPipe } from '../filter.pipe';
+import { UserStoreService } from '../service/user-store.service';
+
 
 @Component({
   selector: 'app-employee',
@@ -12,6 +13,8 @@ import { FilterPipe } from '../filter.pipe';
 })
 
 export class EmployeeComponent implements OnInit {
+  @Input() fullName: string; // Define input property 
+  @Input() role: string; 
   addItemForm!:FormGroup;
   addEmployeeModelObj :EmpModelobj = new EmpModelobj();
   getdata:any[] = [];
@@ -29,7 +32,9 @@ export class EmployeeComponent implements OnInit {
   constructor(
     private httpService:EmpService,
     private auth:AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private userStore:UserStoreService,
+   
     ){}
 
    ngOnInit(){
@@ -37,6 +42,16 @@ export class EmployeeComponent implements OnInit {
    this. getReligions();
    this.getDistricts();
    this.CreateFroms();
+   this.userStore.getFullNameFromStore().subscribe(val=>{
+    let fullNameToken = this.auth.getfullNameFromToken();
+    this.fullName = val || fullNameToken
+   })
+
+   this.userStore.getRoleFromStore().subscribe(val=>{
+    let RoleToken = this.auth.getroleFromToken();
+    this.role = val || RoleToken
+   })
+
   }
 
  

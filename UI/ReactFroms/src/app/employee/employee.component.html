@@ -1,38 +1,43 @@
-<app-navbar></app-navbar>
-  <table class="table mt-5">
-  <thead>
-    <tr>
-      <th scope="col">EmployeeID</th>
-      <th scope="col">Full Name</th>
-      <th scope="col">District</th>
-      <th scope="col">Gender</th>
-      <th scope="col">Religion</th>
-      <th scope="col">Email ID</th>
-      <th scope="col">Mobile No</th>
-      <th scope="col">Salary</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-
-    <tr *ngFor="let item of getdata ; let i = index">
-      <td>{{i +1}}</td>
-      <td>{{ item.fname + ' ' + item.lname }}</td>
-      <td>{{item.district}}</td>
-      <td>{{item.gender}}</td>
-      <td>{{item.religion}}</td>
-      <td>{{item.email}}</td>
-      <td>{{item.mobile}}</td>
-      <td>{{item.salary}}</td>
-
-      <td>
-          <button  class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="onEdit(item)">Update</button>
-          <button class="btn btn-danger mx-1" (click)="DeleteItem(item)">Delete</button>
-      </td>
-
-    </tr>
-  </tbody>
-</table>
+<app-navbar [fullName] ="fullName" [role]="role"></app-navbar>
+<div class="container">
+  <div class="row">
+    <table class="table mt-5">
+      <thead>
+        <tr>
+          <th scope="col">EmployeeID</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">District</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Religion</th>
+          <th scope="col">Email ID</th>
+          <th scope="col">Mobile No</th>
+          <th scope="col">Salary</th>
+    
+          <th *ngIf="role==='Admin'" scope="col" class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+    
+        <tr *ngFor="let item of getdata ; let i = index">
+          <td>{{i +1}}</td>
+          <td>{{ item.fname + ' ' + item.lname }}</td>
+          <td>{{item.district}}</td>
+          <td>{{item.gender}}</td>
+          <td>{{item.religion}}</td>
+          <td>{{item.email}}</td>
+          <td>{{item.mobile}}</td>
+          <td class="text-right">{{item.salary}}</td>
+          
+          <td *ngIf="role==='Admin'">
+              <button  class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="onEdit(item)">Update</button>
+              <button class="btn btn-danger mx-1" (click)="DeleteItem(item)">Delete</button>
+          </td>
+    
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 <div class="d-flex col-6 mx-auto justify-content-md-center">
 <button type="button" (click)="ClickAddEmployee()" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</button>
 <button class="btn btn-info ml-1" (click)="resetSearchInput()" type="button" data-target="#showModal" data-toggle="modal">Show</button>
