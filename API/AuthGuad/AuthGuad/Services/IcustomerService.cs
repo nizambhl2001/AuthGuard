@@ -1,9 +1,10 @@
-﻿using AuthGuad.Models;
+﻿using AuthGuad.Dto;
+using AuthGuad.Models;
 
 namespace AuthGuad.Services
 {
     public interface IcustomerService
     {
-        Task<List<Customer>> Customer();
+        Task<List<CustomerDto>> Customer();
     }
 }

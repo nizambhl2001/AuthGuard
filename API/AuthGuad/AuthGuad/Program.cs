@@ -1,6 +1,8 @@
+using AuthGuad.AutoMapper;
 using AuthGuad.Contain;
 using AuthGuad.Data;
 using AuthGuad.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +13,15 @@ using System.Text;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddTransient<IcustomerService, CustomerService>();
+
 // Add services to the container.
 builder.Services.AddDbContext<ApplicaitonDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+var autoMapper = new MapperConfiguration(item => item.AddProfile(new AutoMapperProfile()));
+IMapper mapper = autoMapper.CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddTransient<IcustomerService, CustomerService>();
 
 builder.Services.AddControllers();
 
