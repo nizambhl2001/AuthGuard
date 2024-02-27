@@ -2,7 +2,7 @@
 {
     public class ApiResponse
     {
-        public string Response { get; set; }
+        public int ResponseCode { get; set; }
         public string Result { get; set; }
         public string ErrorMessage { get; set; }
     }

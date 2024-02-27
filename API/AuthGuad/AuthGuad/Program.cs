@@ -23,6 +23,7 @@ IMapper mapper = autoMapper.CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddTransient<IcustomerService, CustomerService>();
 
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

@@ -11,5 +11,7 @@ namespace AuthGuad.Services
         Task<ApiResponse> Remove(string code);
         Task<ApiResponse> Create(CustomerDto data);
         Task<ApiResponse> Update(CustomerDto data,string code);
+
+   
     }
 }
