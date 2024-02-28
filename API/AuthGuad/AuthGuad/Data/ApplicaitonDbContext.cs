@@ -11,9 +11,8 @@ namespace AuthGuad.Data
 
         public DbSet<User> users { get; set; }
         public DbSet<Customer> customers { get; set; }
-
-
-
+        public DbSet<ProductImage> products { get; set; }
+        public DbSet<TblProduct> tblproducts { get; set; }
 
     }
 }

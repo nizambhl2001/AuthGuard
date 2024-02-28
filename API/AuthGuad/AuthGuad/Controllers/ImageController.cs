@@ -1,7 +1,11 @@
-﻿using AuthGuad.Helper;
+﻿using AuthGuad.Data;
+using AuthGuad.Helper;
+using AuthGuad.Models;
+using AuthGuad.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthGuad.Controllers
 {
@@ -10,10 +14,14 @@ namespace AuthGuad.Controllers
     public class ImageController : ControllerBase
     {
         private readonly IWebHostEnvironment environment;
+        private readonly ApplicaitonDbContext dbContext;
+        private readonly IcustomerService icustomer;
 
-        public ImageController(IWebHostEnvironment environment)
+        public ImageController(IWebHostEnvironment environment, ApplicaitonDbContext dbContext, IcustomerService icustomer)
         {
             this.environment = environment;
+            this.dbContext = dbContext;
+            this.icustomer = icustomer;
         }
 
         [HttpPost("UploadImage")]
@@ -147,9 +155,6 @@ namespace AuthGuad.Controllers
 
                 }
 
-               
-                
-                
                 else
                 {
                     return NotFound();
@@ -160,7 +165,173 @@ namespace AuthGuad.Controllers
 
             }
             return Ok(ImageUrl);
+        } 
+        
+        [HttpGet("download")]
+        public async Task<IActionResult> download(string icode)
+        {
+           
+            try
+            {
+                string FilePath = GetFilePath(icode);
+                string imagePath = FilePath + "\\" + icode + ".png";
+                if (System.IO.File.Exists(imagePath))
+                {
+                    MemoryStream stream = new MemoryStream();
+                    using (FileStream fileStream = new FileStream(imagePath, FileMode.Open))
+                    {
+                        await fileStream.CopyToAsync(stream);
+                    }
+                    stream.Position = 0;
+                    return File(stream, "image/png",icode + ".png");
+
+                }
+
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
+           
+        } 
+        
+        [HttpGet("RemoveImage")]
+        public async Task<IActionResult> RemoveImage(string icode)
+        {
+           
+            try
+            {
+                string FilePath = GetFilePath(icode);
+                string imagePath = FilePath + "\\" + icode + ".png";
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                    return Ok("pass");
+
+                }
+
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
+           
+        } 
+        
+        [HttpGet("MultiRemoveImage")]
+        public async Task<IActionResult> MultiRemoveImage(string icode)
+        {
+           
+            try
+            {
+                string FilePath = GetFilePath(icode);
+                if (System.IO.Directory.Exists(FilePath))
+                {
+                    DirectoryInfo directoryInfo = new DirectoryInfo(FilePath);
+                    FileInfo[] fileInfos = directoryInfo.GetFiles();
+                    foreach (FileInfo fileInfo in fileInfos)
+                    {
+                        fileInfo.Delete();
+                    }
+                    return Ok("pass");
+                }
+
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
+           
         }
+
+
+        [HttpPost("DbMultiUploadImage")]
+        public async Task<IActionResult> DbMultiUploadImage(IFormFileCollection formcollection, string icode)
+        {
+            ApiResponse response = new ApiResponse();
+            int passcount = 0; int errorcount = 0;
+            try
+            {
+               
+                foreach (var file in formcollection)
+                {
+
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(stream);
+                        this.dbContext.products.Add(new ProductImage()
+                        {
+                            PCode = icode,
+                            PImage = stream.ToArray(),
+                        });
+
+                        await this.dbContext.SaveChangesAsync();
+                        passcount++;
+                    }
+
+                   
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                errorcount++;
+                response.ErrorMessage = ex.Message;
+            }
+            response.ResponseCode = 200;
+            response.Result = passcount + "File Uploaded & " + errorcount + " file file";
+            return Ok(response);
+        }
+
+        [HttpGet("GetDbMultImage")]
+        public async Task<IActionResult> GetDbMultImage(string icode)
+        {
+            List<string> ImageUrl = new List<string>();
+            try
+            {
+                var productIamge = this.dbContext.products.Where(item => item.PCode == icode).ToList();
+                if (productIamge != null && productIamge.Count >0)
+                {
+                    productIamge.ForEach(item =>
+                    {
+                        ImageUrl.Add(Convert.ToBase64String(item.PImage));
+                    });
+                   
+                }
+
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return Ok(ImageUrl);
+        }
+
+        [HttpGet("GetDbSingleImage")]
+        public async Task<IActionResult> GetDbSingleImage(string icode)
+        {
+            var i = await this.icustomer.GetDbSingleImage(icode);
+            return Ok(i);
+        }
+
+
         [NonAction]
        private string GetFilePath(string icode)
         {

@@ -122,7 +122,38 @@ namespace AuthGuad.Contain
             return response;
         }
 
-      
+        public async Task<ProductImage> GetDbSingleImage(string icode)
+        {
+            try
+            {
+                // Retrieve the image from the database based on the provided code
+                var productImageEntity = await this.dbContext.products.FirstOrDefaultAsync(item => item.PCode == icode);
+
+                if (productImageEntity != null)
+                {
+                   
+                    var productImage = new ProductImage
+                    {
+                        Id = productImageEntity.Id,
+                        PCode = productImageEntity.PCode,
+                        PImage = productImageEntity.PImage 
+                    };
+
+                    return productImage;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                Console.WriteLine(ex.Message);
+                throw; // rethrow the exception
+            }
+        }
+
     }
 }
 
