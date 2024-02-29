@@ -99,11 +99,11 @@ namespace AuthGuad.Contain
                 var customer = await this.dbContext.customers.FirstOrDefaultAsync(c => c.Code == code);
                 if (customer != null)
                 {
-                    customer.Name = data.Name;
-                    customer.Phone = data.Phone;
-                    customer.Email = data.Email;
-                    customer.IsActive = data.IsActive;
-                    customer.Creditlimit = data.Creditlimit;
+                    //customer.Name = data.Name;
+                    //customer.Phone = data.Phone;
+                    //customer.Email = data.Email;
+                    //customer.IsActive = data.IsActive;
+                    //customer.Creditlimit = data.Creditlimit;
                     this.dbContext.customers.Remove(customer);
                     await dbContext.SaveChangesAsync();
                     response.ResponseCode = 200;

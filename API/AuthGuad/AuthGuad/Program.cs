@@ -22,6 +22,7 @@ var autoMapper = new MapperConfiguration(item => item.AddProfile(new AutoMapperP
 IMapper mapper = autoMapper.CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddTransient<IcustomerService, CustomerService>();
+builder.Services.AddTransient<IInvoiceServices, InvoiceServices>();
 
 
 builder.Services.AddControllers();

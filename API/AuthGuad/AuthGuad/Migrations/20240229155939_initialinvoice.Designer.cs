@@ -4,6 +4,7 @@ using AuthGuad.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthGuad.Migrations
 {
     [DbContext(typeof(ApplicaitonDbContext))]
-    partial class ApplicaitonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240229155939_initialinvoice")]
+    partial class initialinvoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,8 +103,8 @@ namespace AuthGuad.Migrations
                     b.Property<string>("DeliveryAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InvoiceNo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("InvoiceNo")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ModifyDate")
                         .HasColumnType("datetime2");
@@ -141,8 +143,8 @@ namespace AuthGuad.Migrations
                     b.Property<string>("CreateUser")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InvoiceNo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("InvoiceNo")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ModifyDate")
                         .HasColumnType("datetime2");

@@ -9,7 +9,7 @@ namespace AuthGuad.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<Models.Customer, CustomerDto>().ForMember(item=>item.StatusName,opt=>opt.MapFrom(item=>item.IsActive? "Active": "InActive"));
+            CreateMap<Models.Customer, CustomerDto>().ForMember(item=>item.StatusName,opt=>opt.MapFrom(item=>item.IsActive == true? "Active" : "In Active"));
         }
     }
 }
