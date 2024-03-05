@@ -18,12 +18,17 @@ namespace AuthGuad.Contain
             this.dbContext = dbContext;
             this.mapper = mapper;
         }
-        public Task<InvoiceDetials> GetInoviceDetailsByCodeAsync(string invoiceNo)
+        public async Task<InvoiceDetials> GetInoviceDetailsByCodeAsync(string invoiceNo)
         {
-            throw new NotImplementedException();
+            var data = await this.dbContext.tblsalesProducts.FirstOrDefaultAsync(item => item.InvoiceNo == invoiceNo);
+            if (data != null)
+            {
+                return this.mapper.Map<SalesProduct, InvoiceDetials>(data);
+            }
+            return new InvoiceDetials();
         }
 
-        public async Task<List<InoviceHeader>> GetInoviceHeadersAsync()
+        public async Task<List<InoviceHeader>> GetAllInoviceHeadersAsync()
         {
            
             var data = await this.dbContext.tblsalesHeaders.ToListAsync();
@@ -44,9 +49,29 @@ namespace AuthGuad.Contain
             return new InoviceHeader();
         }
 
-        public Task<ApiResponse> RemoveAsync()
+        public async Task<ApiResponse> RemoveAsync(string InvoiceNo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var data = await this.dbContext.tblsalesHeaders.FirstOrDefaultAsync(item => item.InvoiceNo == InvoiceNo);
+                if (data != null)
+                {
+                    this.dbContext.tblsalesHeaders.Remove(data);
+                }
+
+                var _data = await this.dbContext.tblsalesProducts.Where(item => item.InvoiceNo == InvoiceNo).ToListAsync();
+                if (_data != null && _data.Count > 0)
+                {
+                    this.dbContext.tblsalesProducts.RemoveRange(_data);
+                }
+                return new ApiResponse() { Result = "pass", kyValue = InvoiceNo };
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return new ApiResponse();
+
         }
 
         public async Task<ApiResponse> SaveAsync(InvoiceEnity invoiceEnity)
@@ -76,6 +101,14 @@ namespace AuthGuad.Contain
                             {
                                  await this.dbContext.SaveChangesAsync();
                                 await dbTransaction.CommitAsync();
+                                response.Result = "pass";
+                                response.Result = Result;
+                            }
+                            else
+                            {
+                                await dbTransaction.RollbackAsync();
+                                response.Result = "faill";
+                                response.Result = string.Empty;
                             }
                         }
                     }
@@ -88,12 +121,62 @@ namespace AuthGuad.Contain
         private async Task<string> SaveHeader(InoviceHeader inoviceHeader)
         {
             string result = string.Empty;
+            try
+            {
+                SalesHeader _header = this.mapper.Map<InoviceHeader, SalesHeader>(inoviceHeader);
+                var header = await this.dbContext.tblsalesHeaders.FirstOrDefaultAsync(item => item.InvoiceNo == inoviceHeader.InvoiceNo);
+                if(header != null)
+                {
+                    header.CustomerId = inoviceHeader.CustomerId;
+                    header.CustomerName = inoviceHeader.CustomerName;
+                    header.DeliveryAddress = inoviceHeader.DeliveryAddress;
+                    header.Total = inoviceHeader.Total;
+                    header.Remarks = inoviceHeader.Remarks;
+                    header.Tax = inoviceHeader.Tax;
+                    header.NetTotal = inoviceHeader.NetTotal;
+                    header.ModifyUser = inoviceHeader.CreateUser;
+                    header.ModifyDate = DateTime.Now;
+
+                    var _data = await this.dbContext.tblsalesProducts.Where(item => item.InvoiceNo == inoviceHeader.InvoiceNo).ToListAsync();
+                    if(_data !=null && _data.Count > 0)
+                    {
+                        this.dbContext.tblsalesProducts.RemoveRange(_data);
+                    }
+                }
+                else
+                {
+                    await this.dbContext.tblsalesHeaders.AddAsync(_header);
+                }
+            }
+            catch
+            {
+
+            }
             return result;
         } 
        private async Task<bool> SaveDetial(InvoiceDetials invoiceDetials)
         {
-            string result = string.Empty;
+
+            try
+            {
+                SalesProduct _detail = this.mapper.Map<InvoiceDetials, SalesProduct>(invoiceDetials);
+                await this.dbContext.tblsalesProducts.AddAsync(_detail);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
             return true;
+        }
+
+        public async Task<List<InvoiceDetials>> GetInoviceDetailsAsync()
+        {
+            var data = await this.dbContext.tblsalesProducts.ToListAsync();
+            if (data != null && data.Count > 0)
+            {
+                return this.mapper.Map<List<SalesProduct>, List<InvoiceDetials>>(data);
+            }
+            return new List<InvoiceDetials>();
         }
     }
 }
