@@ -74,7 +74,7 @@ namespace AuthGuad.Controllers
         [NonAction]
         public string Getbase64string()
         {
-            string filepath = this.environment.WebRootPath + "\\Upload\\common\\logo.jpg";
+            string filepath = this.environment.WebRootPath + "\\Upload\\common\\noimage.png";
             byte[] imgarray = System.IO.File.ReadAllBytes(filepath);
             string base64 = Convert.ToBase64String(imgarray);
             return base64;
